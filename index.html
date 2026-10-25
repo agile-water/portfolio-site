@@ -112,11 +112,6 @@ h2{font-size:24px;margin-bottom:6px;letter-spacing:-.015em}
 .finfo h3{font-size:22px;margin:8px 0 2px;display:flex;align-items:center;gap:10px}
 .finfo h3 img{width:36px;height:36px;border-radius:10px}
 .finfo p{color:var(--sub);margin:4px 0 14px;font-size:15px}
-.hoopbox{margin-top:12px;background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:16px}
-.hoopbox h3{font-size:17px}
-.hoopbox p{color:var(--sub);font-size:14px;margin-bottom:10px}
-#hoop{display:block;width:100%;height:260px;border-radius:16px;background:var(--bg);touch-action:none;cursor:grab}
-#hoop:active{cursor:grabbing}
 
 #games{position:relative;isolation:isolate}
 #games::before{content:"";position:absolute;z-index:-1;top:0;bottom:0;left:50%;width:100vw;translate:-50% 0;pointer-events:none;
@@ -190,8 +185,6 @@ dialog#sheet::backdrop{background:rgba(10,15,30,.5);backdrop-filter:blur(4px);an
   .feature{padding:32px 36px;gap:36px}
   .qr{width:180px}
   .finfo h3{font-size:26px}
-  #hoop{height:340px}
-  .hoopbox{padding:22px}
   .avatar{width:180px;height:180px}
   #aboutText{font-size:18px;max-width:560px}
   .about-row{gap:36px}
@@ -259,11 +252,6 @@ dialog#sheet::backdrop{background:rgba(10,15,30,.5);backdrop-filter:blur(4px);an
     </div>
     <div class="grid" id="gameGrid"></div>
     <p class="empty" id="gameEmpty">일치하는 게임이 없어요.</p>
-    <div class="hoopbox rv">
-      <h3>🏀 농구왕 맛보기</h3>
-      <p>공을 뒤로 끌었다가 놓으면 슛! 연속으로 넣으면 점수가 쌓여요.</p>
-      <canvas id="hoop" aria-label="농구 슛 미니게임"></canvas>
-    </div>
   </section>
 
   <section id="stack">
@@ -468,55 +456,6 @@ if(fine&&!reduce){
     b.addEventListener("pointerleave",()=>b.style.translate="");
   });
 }
-
-/* ── 미니게임: 농구 슛 ── */
-(()=>{
-  const cv=$("hoop"),ctx=cv.getContext("2d"),R=15,dpr=Math.min(devicePixelRatio||1,2);
-  let W=0,H=0,ball,drag=null,score=0,best=+store.get("hoopBest")||0,run=false,msg="",msgT=0,scored=false,parts=[],col={fg:"#191f28",sub:"#4e5968"},cf=0;
-  const hx=()=>W-80,hy=()=>H*.38;
-  function size(){const r=cv.getBoundingClientRect();W=r.width;H=r.height;if(!W)return;cv.width=W*dpr;cv.height=H*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);reset();draw()}
-  function reset(){ball={x:56,y:H-44,vx:0,vy:0,fly:false,dead:false};scored=false}
-  function flash(t){msg=t;msgT=50}
-  function burst(){for(let n=0;n<16;n++)parts.push({x:hx(),y:hy(),vx:(Math.random()-.5)*7,vy:-Math.random()*6-1,l:40,c:["#0083f9","#7a5cff","#ffb020","#2fd36b"][n%4]})}
-  function pos(e){const r=cv.getBoundingClientRect();return{x:e.clientX-r.left,y:e.clientY-r.top}}
-  function vel(p){let vx=(ball.x-p.x)*.16,vy=(ball.y-p.y)*.16;const m=Math.hypot(vx,vy);if(m>17){vx*=17/m;vy*=17/m}return{vx,vy,m}}
-  cv.addEventListener("pointerdown",e=>{start();const p=pos(e);if(!ball.fly&&Math.hypot(p.x-ball.x,p.y-ball.y)<48){drag=p;cv.setPointerCapture(e.pointerId)}});
-  cv.addEventListener("pointermove",e=>{if(drag){drag=pos(e);draw()}});
-  const up=()=>{if(!drag)return;const v=vel(drag);drag=null;if(v.m>2.5){ball.vx=v.vx;ball.vy=v.vy;ball.fly=true;start()}draw()};
-  cv.addEventListener("pointerup",up);cv.addEventListener("pointercancel",()=>{drag=null});
-  function end(missed){if(ball.dead)return;ball.dead=true;if(missed&&!scored){if(score)flash("아쉬워요! 다시 도전");score=0}setTimeout(reset,550)}
-  function step(){
-    if(parts.length)parts=parts.filter(p=>{p.x+=p.vx;p.y+=p.vy;p.vy+=.3;return --p.l>0});
-    const b=ball;if(!b.fly||b.dead)return;
-    const py=b.y;b.vy+=.38;b.x+=b.vx;b.y+=b.vy;
-    if(b.x<R){b.x=R;b.vx*=-.6}
-    const bx=hx()+36;if(b.x+R>bx&&b.x<bx+8&&b.y>hy()-62&&b.y<hy()+12){b.x=bx-R;b.vx*=-.55}
-    for(const ex of [hx()-30,hx()+30]){const dx=b.x-ex,dy=b.y-hy(),d=Math.hypot(dx,dy);if(d<R+3&&d>0){const nx=dx/d,ny=dy/d,dot=b.vx*nx+b.vy*ny;if(dot<0){b.vx=(b.vx-1.7*dot*nx)*.8;b.vy=(b.vy-1.7*dot*ny)*.8}b.x=ex+nx*(R+3);b.y=hy()+ny*(R+3)}}
-    if(!scored&&py<hy()&&b.y>=hy()&&b.vy>0&&b.x>hx()-26&&b.x<hx()+26){scored=true;score++;if(score>best){best=score;store.set("hoopBest",best)}flash(score>1?`${score}연속! 🔥`:"+1 🏀");burst()}
-    if(b.y>H-R-4&&b.vy>0){b.y=H-R-4;b.vy*=-.5;b.vx*=.8;if(Math.abs(b.vy)<1.6)end(true)}
-    if(b.x>W+30)end(true);
-  }
-  function draw(){
-    if(!W)return;if(cf++%60===0){const s=getComputedStyle(root);col={fg:s.getPropertyValue("--fg").trim()||col.fg,sub:s.getPropertyValue("--sub").trim()||col.sub}}
-    ctx.clearRect(0,0,W,H);
-    ctx.strokeStyle=col.sub;ctx.globalAlpha=.25;ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(0,H-6);ctx.lineTo(W,H-6);ctx.stroke();ctx.globalAlpha=1;
-    const X=hx(),Y=hy();
-    ctx.fillStyle="#cfd6de";ctx.fillRect(X+36,Y-62,8,74);
-    ctx.strokeStyle="#ff6a3d";ctx.lineWidth=4;ctx.lineCap="round";ctx.beginPath();ctx.moveTo(X-30,Y);ctx.lineTo(X+30,Y);ctx.stroke();
-    ctx.strokeStyle=col.sub;ctx.globalAlpha=.45;ctx.lineWidth=1.5;for(let n=0;n<=4;n++){ctx.beginPath();ctx.moveTo(X-30+n*15,Y);ctx.lineTo(X-18+n*9,Y+30);ctx.stroke()}ctx.beginPath();ctx.moveTo(X-18,Y+30);ctx.lineTo(X+18,Y+30);ctx.stroke();ctx.globalAlpha=1;
-    if(drag){const v=vel(drag);let x=ball.x,y=ball.y,vx=v.vx,vy=v.vy;ctx.fillStyle="#0083f9";for(let n=0;n<26;n++){vy+=.38;x+=vx;y+=vy;if(n%2===0){ctx.globalAlpha=1-n/30;ctx.beginPath();ctx.arc(x,y,3,0,7);ctx.fill()}}ctx.globalAlpha=1}
-    const b=ball,bx=drag&&!b.fly?b.x+Math.max(-14,Math.min(0,(drag.x-b.x)*.1)):b.x;
-    ctx.fillStyle="#f97316";ctx.beginPath();ctx.arc(bx,b.y,R,0,7);ctx.fill();
-    ctx.strokeStyle="#7c2d12";ctx.lineWidth=1.6;ctx.beginPath();ctx.arc(bx,b.y,R,0,7);ctx.moveTo(bx-R,b.y);ctx.lineTo(bx+R,b.y);ctx.moveTo(bx,b.y-R);ctx.lineTo(bx,b.y+R);ctx.stroke();
-    parts.forEach(p=>{ctx.fillStyle=p.c;ctx.globalAlpha=p.l/40;ctx.fillRect(p.x,p.y,5,5)});ctx.globalAlpha=1;
-    ctx.fillStyle=col.fg;ctx.font="700 14px sans-serif";ctx.textAlign="left";ctx.fillText(`점수 ${score}   최고 ${best}`,12,22);
-    if(msgT>0){ctx.textAlign="center";ctx.font="800 22px sans-serif";ctx.globalAlpha=Math.min(1,msgT/20);ctx.fillStyle="#0083f9";ctx.fillText(msg,W/2,H/2);ctx.globalAlpha=1;msgT--}
-  }
-  function loop(){if(!run)return;step();draw();requestAnimationFrame(loop)}
-  function start(){if(!run){run=true;requestAnimationFrame(loop)}}
-  size();addEventListener("resize",size);
-  if("IntersectionObserver" in window)new IntersectionObserver(es=>{if(es[0].isIntersecting)start();else run=false}).observe(cv);
-})();
 </script>
 </body>
 </html>
