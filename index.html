@@ -351,7 +351,7 @@ function matches(w){
 const qrSVG=id=>{const q=QR[id];return q?`<svg role="img" aria-label="QR 코드" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${q.n} ${q.n}" shape-rendering="crispEdges"><path fill="#fff" d="M0 0h${q.n}v${q.n}H0z"/><path stroke="#000" d="${q.d}"/></svg>`:""};
 const cardHTML=w=>`<div class="card gcard" role="button" tabindex="0" data-id="${w.id}" aria-haspopup="dialog">
   ${w.i?`<img class="ico" src="${w.i}" alt="${w.t} 로고">`:`<div class="ico">${w.t[0]}</div>`}
-  ${w.k==="app"?`<span class="go">↗</span>`:""}<h3>${w.t}</h3><p>${w.d}</p>
+  <h3>${w.t}</h3><p>${w.d}</p>
   <div class="tags">${w.g.map(x=>`<span>${x}</span>`).join("")}</div>
   <div class="gqr">${qrSVG(w.id)}</div><div class="scan">📱 카메라로 스캔</div><a class="play" href="${w.u}" target="_blank" rel="noopener">${w.k==="game"?"▶ 플레이":"▶ 열기"}</a></div>`;
 function render(first){
@@ -404,7 +404,7 @@ async function openSheet(id){
     <h3>${w.t}</h3><div class="kind">${w.k==="app"?"앱":"게임"}</div><p class="desc">${w.d}</p>
     <div class="tags">${w.g.map(x=>`<span>${x}</span>`).join("")}</div>
     <div class="sqr">${qrSVG(w.id)}</div><p class="shint">휴대폰 카메라로 QR 코드를 스캔하면 ${w.k==="game"?"플레이":"열어 볼"} 수 있어요.</p>
-    <div class="sact">${w.k==="app"?`<a class="btn" href="${w.u}" target="_blank" rel="noopener">열어보기 ↗</a>`:`<a class="btn gplay" href="${w.u}" target="_blank" rel="noopener">▶ 플레이하기</a>`}
+    <div class="sact"><a class="btn gplay" href="${w.u}" target="_blank" rel="noopener">${w.k==="app"?"열어보기 ↗":"▶ 플레이하기"}</a>
     <button class="like" id="likeBtn" type="button" aria-label="좋아요">♡ <span id="likeN">·</span></button></div>`;
   const lb=$("likeBtn");let liked=store.get("liked:"+id)==="1";
   const paint=n=>{lb.classList.toggle("on",liked);lb.firstChild.textContent=liked?"♥ ":"♡ ";$("likeN").textContent=n==null?"":n};
