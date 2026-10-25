@@ -199,6 +199,18 @@ dialog#sheet::backdrop{background:rgba(10,15,30,.5);backdrop-filter:blur(4px);an
 }
 @media(min-width:1200px){.hero-art{max-width:560px}}
 
+/* 웹(넓은 화면)의 게임 카드: 로고 오른쪽에 이름, 그 아랫줄에 설명 */
+@media(min-width:700px){
+  #gameGrid{grid-template-columns:repeat(2,1fr)}
+  .gcard{display:grid;grid-template-columns:auto 1fr;column-gap:16px;align-content:start}
+  .gcard .ico{grid-column:1;grid-row:1/3;margin:0}
+  .gcard h3{grid-column:2;grid-row:1;align-self:end}
+  .gcard p{grid-column:2;grid-row:2;align-self:start;margin:2px 0 0}
+  .gcard .tags,.gcard .gqr,.gcard .scan,.gcard .play{grid-column:1/-1}
+  .gcard .tags{margin-top:14px}
+}
+@media(min-width:900px){#gameGrid{grid-template-columns:repeat(3,1fr)}}
+
 /* reveal */
 .js .rv{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s cubic-bezier(.2,.8,.2,1);transition-delay:var(--d,0s)}
 .js .rv.in{opacity:1;transform:none}
@@ -337,7 +349,7 @@ function matches(w){
 }
 /* 게임은 QR 코드로만 열립니다 (링크 없음). QR은 각 게임 주소를 미리 만들어 둔 것입니다. */
 const qrSVG=id=>{const q=QR[id];return q?`<svg role="img" aria-label="QR 코드" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${q.n} ${q.n}" shape-rendering="crispEdges"><path fill="#fff" d="M0 0h${q.n}v${q.n}H0z"/><path stroke="#000" d="${q.d}"/></svg>`:""};
-const cardHTML=w=>`<div class="card" role="button" tabindex="0" data-id="${w.id}" aria-haspopup="dialog">
+const cardHTML=w=>`<div class="card${w.k==="game"?" gcard":""}" role="button" tabindex="0" data-id="${w.id}" aria-haspopup="dialog">
   ${w.i?`<img class="ico" src="${w.i}" alt="${w.t} 로고">`:`<div class="ico">${w.t[0]}</div>`}
   ${w.k==="app"?`<span class="go">↗</span>`:""}<h3>${w.t}</h3><p>${w.d}</p>
   <div class="tags">${w.g.map(x=>`<span>${x}</span>`).join("")}</div>
