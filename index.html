@@ -228,6 +228,10 @@ dialog.sl::backdrop{background:rgba(10,15,30,.5);backdrop-filter:blur(4px);anima
 #about{padding-top:48px}
 #about h2{margin-bottom:18px}
 
+.more{display:block;width:100%;min-height:48px;margin-top:12px;border-radius:14px;background:var(--card);border:1px dashed var(--line2);color:var(--tagfg);font-weight:700;font-size:15px;transition:background .2s}
+.more[hidden]{display:none}
+.more:active{background:var(--main-soft)}
+
 /* 컴퓨터(마우스): 카드 끝에 "QR 보기" 표시 */
 .qrcue{display:none}
 @media(hover:hover) and (pointer:fine){.qrcue{display:inline-flex;align-items:center;align-self:center;margin-left:auto;font-size:13px;font-weight:700;color:#fff;padding:8px 14px;border-radius:999px;background:var(--main);white-space:nowrap;transition:transform .2s,box-shadow .2s}.card:hover .qrcue{transform:translateX(3px);box-shadow:0 6px 14px rgba(0,131,249,.35)}}
@@ -312,6 +316,7 @@ dialog.sl::backdrop{background:rgba(10,15,30,.5);backdrop-filter:blur(4px);anima
     <h2 class="rv">앱인토스 <span class="cnt" id="cntToss"></span></h2>
     <p class="sec-sub rv">토스 앱 안에서 쓰는 미니앱이에요. 컴퓨터에서는 카드를 눌러 QR 코드를 휴대폰으로 스캔해 보세요.</p>
     <div class="grid" id="tossGrid"></div>
+    <button class="more" id="moreToss" data-more="Toss" type="button" hidden></button>
   </section>
 
   <section id="apps">
@@ -424,19 +429,27 @@ const cardHTML=w=>`<div class="card gcard" role="button" tabindex="0" data-id="$
     <span class="qrcue" aria-hidden="true">QR 보기 ›</span>
   </div>
   <a class="play" href="${w.u}" target="_blank" rel="noopener">${w.k==="game"?"▶ 플레이":"▶ 열기"}</a></div>`;
+const expanded={Toss:false};
 function render(first){
   const list=items.filter(matches);
   const isToss=w=>w.g.includes("앱인토스");
   const toss=list.filter(w=>w.k==="app"&&isToss(w)),apps=list.filter(w=>w.k==="app"&&!isToss(w)),games=list.filter(w=>w.k==="game");
   const fill=(el,arr)=>{el.innerHTML=arr.map((w,n)=>`<div class="cw ${first?"rv":"pop"}" style="--d:${n*.06}s">${cardHTML(w)}</div>`).join("")};
-  fill($("tossGrid"),toss);fill($("appGrid"),apps);fill($("gameGrid"),games);
   const filtering=query.trim()!==""||tag!=="전체";
+  /* 휴대폰에서 목록이 너무 길어지지 않게, 필터·검색이 없을 때는 앞 5개만 보여주고 "더 보기"로 펼친다 */
+  const phone=matchMedia("(max-width:699px)").matches,LIM=5;
+  const cut=(arr,key)=>{const btn=$("more"+key);const over=phone&&!filtering&&arr.length>LIM;const open=expanded[key];
+    btn.hidden=!over;if(over)btn.textContent=open?"접기":`나머지 ${arr.length-LIM}개 더 보기`;btn.setAttribute("aria-expanded",open?"true":"false");
+    return over&&!open?arr.slice(0,LIM):arr};
+  fill($("tossGrid"),cut(toss,"Toss"));fill($("appGrid"),apps);fill($("gameGrid"),games);
   [["toss",toss],["apps",apps],["games",games]].forEach(([id,arr])=>{$(id).style.display=(arr.length||!filtering)?"":"none"});
   $("noneEmpty").style.display=list.length?"none":"block";
   $("cntToss").textContent=toss.length;$("cntApps").textContent=apps.length;$("cntGames").textContent=games.length;
   $("fchips").innerHTML=tagsList.map(t=>`<button type="button" class="${t===tag?"on":""}" data-tag="${t}">${t}</button>`).join("");
   if(first)reveal();
 }
+document.querySelectorAll(".more").forEach(b=>b.addEventListener("click",()=>{const k=b.dataset.more;expanded[k]=!expanded[k];render(false);if(!expanded[k])$("toss").scrollIntoView({behavior:"smooth",block:"start"})}));
+matchMedia("(max-width:699px)").addEventListener("change",()=>render(false));
 $("q").addEventListener("input",e=>{query=e.target.value;render(false)});
 $("fchips").addEventListener("click",e=>{const b=e.target.closest("[data-tag]");if(!b)return;tag=b.dataset.tag;render(false)});
 
