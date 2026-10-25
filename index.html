@@ -110,6 +110,16 @@ h2{font-size:24px;margin-bottom:6px;letter-spacing:-.015em}
 .sqr{width:200px;max-width:70%;border-radius:18px;overflow:hidden;background:#fff;box-shadow:var(--shadow);border:1px solid var(--line);margin-top:18px}
 .sqr svg{display:block;width:100%}
 .shint{color:var(--sub);font-size:14px;margin-top:10px}
+.card{cursor:pointer}
+.card:focus-visible{outline:3px solid var(--main);outline-offset:2px}
+/* 휴대폰·태블릿(터치): QR 대신 플레이 버튼 */
+.play,.gplay{display:none}
+.play{margin-top:14px;padding:10px 16px;border-radius:12px;background:var(--main);color:#fff;font-weight:700;font-size:14px;text-decoration:none;align-items:center;justify-content:center;width:100%}
+@media(hover:none) and (pointer:coarse){
+  .gqr,.scan,.sqr,.shint{display:none}
+  .play{display:flex}
+  .gplay{display:inline-block}
+}
 
 #games{position:relative;isolation:isolate}
 #games::before{content:"";position:absolute;z-index:-1;top:0;bottom:0;left:50%;width:100vw;translate:-50% 0;pointer-events:none;
@@ -235,7 +245,7 @@ dialog#sheet::backdrop{background:rgba(10,15,30,.5);backdrop-filter:blur(4px);an
 
   <section id="games">
     <h2 class="rv">게임</h2>
-    <p class="sec-sub rv">휴대폰 카메라로 QR 코드를 스캔하면 플레이할 수 있어요.</p>
+    <p class="sec-sub rv">컴퓨터에서는 QR 코드를 휴대폰으로 스캔하고, 휴대폰에서는 플레이 버튼을 눌러 즐겨 보세요.</p>
     <div class="grid" id="gameGrid"></div>
     <p class="empty" id="gameEmpty">일치하는 게임이 없어요.</p>
   </section>
@@ -327,11 +337,11 @@ function matches(w){
 }
 /* 게임은 QR 코드로만 열립니다 (링크 없음). QR은 각 게임 주소를 미리 만들어 둔 것입니다. */
 const qrSVG=id=>{const q=QR[id];return q?`<svg role="img" aria-label="QR 코드" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${q.n} ${q.n}" shape-rendering="crispEdges"><path fill="#fff" d="M0 0h${q.n}v${q.n}H0z"/><path stroke="#000" d="${q.d}"/></svg>`:""};
-const cardHTML=w=>`<button class="card" type="button" data-id="${w.id}" aria-haspopup="dialog">
+const cardHTML=w=>`<div class="card" role="button" tabindex="0" data-id="${w.id}" aria-haspopup="dialog">
   ${w.i?`<img class="ico" src="${w.i}" alt="${w.t} 로고">`:`<div class="ico">${w.t[0]}</div>`}
   ${w.k==="app"?`<span class="go">↗</span>`:""}<h3>${w.t}</h3><p>${w.d}</p>
   <div class="tags">${w.g.map(x=>`<span>${x}</span>`).join("")}</div>
-  ${w.k==="game"?`<div class="gqr">${qrSVG(w.id)}</div><div class="scan">📱 카메라로 스캔</div>`:""}</button>`;
+  ${w.k==="game"?`<div class="gqr">${qrSVG(w.id)}</div><div class="scan">📱 카메라로 스캔</div><a class="play" href="${w.u}" target="_blank" rel="noopener">▶ 플레이</a>`:""}</div>`;
 function render(first){
   const list=items.filter(matches);
   const apps=list.filter(w=>w.k==="app"),games=list.filter(w=>w.k==="game");
@@ -382,7 +392,7 @@ async function openSheet(id){
     <h3>${w.t}</h3><div class="kind">${w.k==="app"?"앱":"게임"}</div><p class="desc">${w.d}</p>
     <div class="tags">${w.g.map(x=>`<span>${x}</span>`).join("")}</div>
     ${w.k==="game"?`<div class="sqr">${qrSVG(w.id)}</div><p class="shint">휴대폰 카메라로 QR 코드를 스캔하면 플레이할 수 있어요.</p>`:""}
-    <div class="sact">${w.k==="app"?`<a class="btn" href="${w.u}" target="_blank" rel="noopener">열어보기 ↗</a>`:""}
+    <div class="sact">${w.k==="app"?`<a class="btn" href="${w.u}" target="_blank" rel="noopener">열어보기 ↗</a>`:`<a class="btn gplay" href="${w.u}" target="_blank" rel="noopener">▶ 플레이하기</a>`}
     <button class="like" id="likeBtn" type="button" aria-label="좋아요">♡ <span id="likeN">·</span></button></div>`;
   const lb=$("likeBtn");let liked=store.get("liked:"+id)==="1";
   const paint=n=>{lb.classList.toggle("on",liked);lb.firstChild.textContent=liked?"♥ ":"♡ ";$("likeN").textContent=n==null?"":n};
@@ -391,7 +401,8 @@ async function openSheet(id){
   paint(await getN(id));
   lb.onclick=async()=>{if(liked)return;liked=true;store.set("liked:"+id,"1");confetti(lb);const n=await addN(id);paint(n)};
 }
-document.addEventListener("click",e=>{const c=e.target.closest(".card");if(c)openSheet(c.dataset.id)});
+document.addEventListener("click",e=>{if(e.target.closest("a"))return;const c=e.target.closest(".card");if(c)openSheet(c.dataset.id)});
+document.addEventListener("keydown",e=>{if((e.key==="Enter"||e.key===" ")&&e.target.classList&&e.target.classList.contains("card")){e.preventDefault();openSheet(e.target.dataset.id)}});
 $("closeBtn").onclick=()=>sheet.close();
 sheet.addEventListener("click",e=>{if(e.target===sheet)sheet.close()});
 /* 아래로 끌어서 닫기 */
