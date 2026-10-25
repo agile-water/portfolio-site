@@ -20,9 +20,9 @@ document.documentElement.classList.add("js");
 try{var t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}
 </script>
 <style>
-:root{--bg:#fff;--surface:#f2f4f6;--fg:#191f28;--sub:#4e5968;--line:#e5e8eb;--main:#0083f9;--main2:#7a5cff;--main-soft:#e8f3ff;--shadow:0 10px 30px rgba(0,30,80,.08);color-scheme:light}
-@media(prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#17171c;--surface:#202027;--fg:#f9fafb;--sub:#a1a7b0;--line:#2c2c35;--main-soft:#12304f;--shadow:0 10px 30px rgba(0,0,0,.4);color-scheme:dark}}
-:root[data-theme=dark]{--bg:#17171c;--surface:#202027;--fg:#f9fafb;--sub:#a1a7b0;--line:#2c2c35;--main-soft:#12304f;--shadow:0 10px 30px rgba(0,0,0,.4);color-scheme:dark}
+:root{--bg:#fff;--surface:#f2f4f6;--fg:#191f28;--sub:#4e5968;--line:#e5e8eb;--main:#0083f9;--main2:#7a5cff;--main-soft:#e8f3ff;--tagfg:#0062c4;--shadow:0 10px 30px rgba(0,30,80,.08);color-scheme:light}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#17171c;--surface:#202027;--fg:#f9fafb;--sub:#a1a7b0;--line:#2c2c35;--main-soft:#12304f;--tagfg:#7cc0ff;--shadow:0 10px 30px rgba(0,0,0,.4);color-scheme:dark}}
+:root[data-theme=dark]{--bg:#17171c;--surface:#202027;--fg:#f9fafb;--sub:#a1a7b0;--line:#2c2c35;--main-soft:#12304f;--tagfg:#7cc0ff;--shadow:0 10px 30px rgba(0,0,0,.4);color-scheme:dark}
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;overflow-x:clip}
 html:has(dialog[open]){overflow:hidden}
@@ -33,10 +33,10 @@ button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}
 /* nav */
 nav{position:sticky;top:0;background:color-mix(in srgb,var(--bg) 85%,transparent);backdrop-filter:blur(14px);border-bottom:1px solid var(--line);z-index:20}
 nav .wrap{display:flex;gap:20px;height:56px;align-items:center;overflow-x:auto;scrollbar-width:none}
-nav a{color:var(--sub);text-decoration:none;font-weight:600;font-size:15px;white-space:nowrap;transition:color .2s}
+nav a{color:var(--sub);text-decoration:none;font-weight:600;font-size:15px;white-space:nowrap;transition:color .2s;display:inline-flex;align-items:center;justify-content:center;min-height:44px;min-width:44px;padding:0 8px}
 nav a:hover,nav a.on{color:var(--main)}
 nav a:first-child{color:var(--fg);margin-right:auto}
-.tbtn{width:36px;height:36px;border-radius:50%;background:var(--surface);flex:none;font-size:18px;line-height:1;transition:transform .4s,background .2s}
+.tbtn{width:44px;height:44px;border-radius:50%;background:var(--surface);flex:none;font-size:18px;line-height:1;transition:transform .4s,background .2s}
 .tbtn:hover{transform:rotate(25deg) scale(1.1)}
 .progress{position:absolute;left:0;bottom:-1px;height:2px;width:0;background:linear-gradient(90deg,var(--main),var(--main2))}
 
@@ -44,7 +44,7 @@ nav a:first-child{color:var(--fg);margin-right:auto}
 .hero{position:relative;padding:72px 0 48px}
 .blob{position:absolute;border-radius:50%;filter:blur(50px);opacity:.3;z-index:-1;animation:drift 14s ease-in-out infinite alternate;will-change:transform,translate;transition:translate .6s ease-out}
 .b1{width:240px;height:240px;background:linear-gradient(135deg,var(--main),var(--main2));top:-30px;right:-50px}
-.b2{width:170px;height:170px;background:var(--main2);top:260px;left:-60px;animation-delay:-6s}
+@media(hover:none){.blob{animation:none}}
 @keyframes drift{to{transform:translate(24px,32px) scale(1.12)}}
 .hi{color:var(--main);font-weight:700}
 .hero h1{font-size:clamp(32px,8.5vw,52px);line-height:1.25;margin:10px 0 16px;letter-spacing:-.025em}
@@ -75,7 +75,7 @@ h2{font-size:24px;margin-bottom:6px;letter-spacing:-.015em}
 .search input:focus{border-color:var(--main);box-shadow:0 0 0 4px var(--main-soft)}
 .search::before{content:"🔍";position:absolute;left:15px;top:50%;translate:0 -50%;font-size:16px}
 .fchips{display:flex;gap:8px;flex-wrap:wrap}
-.fchips button{padding:8px 15px;border-radius:999px;background:var(--surface);color:var(--sub);font-weight:600;font-size:14px;transition:transform .15s,background .2s,color .2s}
+.fchips button{min-height:44px;padding:8px 18px;border-radius:999px;background:var(--surface);color:var(--sub);font-weight:600;font-size:14px;transition:transform .15s,background .2s,color .2s}
 .fchips button:hover{transform:translateY(-2px)}
 .fchips button.on{background:var(--main);color:#fff}
 .empty{color:var(--sub);padding:20px 0;display:none}
@@ -96,7 +96,7 @@ h2{font-size:24px;margin-bottom:6px;letter-spacing:-.015em}
 .card h3{font-size:17px}
 .card p{color:var(--sub);font-size:15px;margin:4px 0 12px}
 .tags{display:flex;gap:6px;flex-wrap:wrap}
-.tags span{font-size:13px;font-weight:600;padding:3px 9px;border-radius:999px;background:var(--main-soft);color:var(--main)}
+.tags span{font-size:13px;font-weight:600;padding:3px 9px;border-radius:999px;background:var(--main-soft);color:var(--tagfg)}
 .go{position:absolute;top:18px;right:20px;color:var(--sub);transition:transform .2s,color .2s}
 .card:hover .go{transform:translate(3px,-3px);color:var(--main)}
 @keyframes pop{from{opacity:0;transform:scale(.9) translateY(10px)}}
@@ -140,7 +140,7 @@ h2{font-size:24px;margin-bottom:6px;letter-spacing:-.015em}
 #aboutText{color:var(--sub);font-size:16px;max-width:460px}
 @media(max-width:560px){.about-row{flex-direction:column;text-align:center;gap:20px}}
 .chips{display:flex;gap:8px;flex-wrap:wrap}
-.chip{padding:9px 16px;border-radius:999px;background:var(--main-soft);color:var(--main);font-weight:600;font-size:14px;transition:transform .2s}
+.chip{padding:9px 16px;border-radius:999px;background:var(--main-soft);color:var(--tagfg);font-weight:600;font-size:14px;transition:transform .2s}
 .chip:hover{transform:translateY(-3px) scale(1.06)}
 .tl{border-left:2px solid var(--line);margin-left:6px}
 .tl div{position:relative;padding:0 0 22px 20px}
@@ -150,13 +150,13 @@ footer{padding:56px 0 72px;color:var(--sub);font-size:14px;border-top:1px solid 
 footer a{color:inherit}
 
 /* sheet */
-dialog#sheet{border:0;padding:0;background:transparent;max-width:none;max-height:none;overflow:visible;margin:auto;width:min(480px,calc(100% - 32px));color:var(--fg)}
-dialog#sheet::backdrop{background:rgba(10,15,30,.5);backdrop-filter:blur(4px);animation:fade .25s}
+dialog.sl{border:0;padding:0;background:transparent;max-width:none;max-height:none;overflow:visible;margin:auto;width:min(480px,calc(100% - 32px));color:var(--fg)}
+dialog.sl::backdrop{background:rgba(10,15,30,.5);backdrop-filter:blur(4px);animation:fade .25s}
 @keyframes fade{from{opacity:0}}
 @keyframes up{from{transform:translateY(60px) scale(.96);opacity:0}}
 .panel{position:relative;background:var(--bg);border:1px solid var(--line);border-radius:28px;padding:28px 24px 24px;box-shadow:0 30px 80px rgba(0,0,0,.35);animation:up .4s cubic-bezier(.2,.9,.2,1);touch-action:pan-y}
 .grab{width:44px;height:5px;border-radius:3px;background:var(--line);margin:-14px auto 18px;touch-action:none;cursor:grab}
-.x{position:absolute;top:16px;right:16px;width:34px;height:34px;border-radius:50%;background:var(--surface);font-size:15px}
+.x{position:absolute;top:14px;right:14px;width:44px;height:44px;border-radius:50%;background:var(--surface);font-size:15px}
 .big{width:96px;height:96px;border-radius:26px;object-fit:cover;display:grid;place-items:center;background:var(--main-soft);color:var(--main);font-weight:800;font-size:36px;box-shadow:var(--shadow);animation:bob 3s ease-in-out infinite}
 @keyframes bob{50%{translate:0 -6px}}
 .panel h3{font-size:24px;margin:16px 0 2px}
@@ -168,7 +168,7 @@ dialog#sheet::backdrop{background:rgba(10,15,30,.5);backdrop-filter:blur(4px);an
 .like:active{transform:scale(.92)}
 .like.on{background:#ffe8ec;color:#e5384f}
 @media(max-width:700px){
-  dialog#sheet{margin:auto 0 0;width:100%}
+  dialog.sl{margin:auto 0 0;width:100%}
   .panel{border-radius:28px 28px 0 0;border-bottom:0;padding-bottom:calc(24px + env(safe-area-inset-bottom))}
 }
 
@@ -215,6 +215,35 @@ dialog#sheet::backdrop{background:rgba(10,15,30,.5);backdrop-filter:blur(4px);an
 }
 @media(min-width:1100px){#gameGrid,#appGrid,#tossGrid{grid-template-columns:repeat(2,1fr)}}
 
+/* 컴퓨터(마우스): 카드 끝에 "QR 보기" 표시 */
+.qrcue{display:none}
+@media(hover:hover) and (pointer:fine){.qrcue{display:inline-flex;align-items:center;align-self:center;margin-left:auto;font-size:13px;font-weight:700;color:var(--tagfg);padding:6px 12px;border-radius:999px;background:var(--main-soft);white-space:nowrap;transition:transform .2s}.card:hover .qrcue{transform:translateX(3px)}}
+
+/* 휴대폰: 가로형 카드(로고·이름·설명·태그 + 작은 열기 버튼)로 줄이고, 첫 화면도 압축 */
+@media(max-width:699px){
+  #tossGrid,#appGrid,#gameGrid{grid-template-columns:1fr}
+  section{padding:28px 0}
+  .hero{padding:28px 0 12px}
+  .hero h1{font-size:30px;margin:8px 0 12px}
+  .hero p.lead{font-size:16px}
+  .cta{margin-top:20px}
+  .btn{padding:12px 18px}
+  .hero-grid{gap:0}
+  .hero-art{width:116px;margin:4px auto 0}
+  .stats{margin-top:12px}
+  .stats b{font-size:26px}
+  .card{display:flex;align-items:center;gap:10px;padding:14px}
+  .chead{display:flex;align-items:center;gap:12px;flex:1;min-width:0}
+  .lbox{display:block;position:relative;width:56px;height:56px;flex:none}
+  .lbox .ico{position:absolute;inset:0;width:100%;height:100%;margin:0;border-radius:14px}
+  .ctext{min-width:0;flex:1}
+  .ctext h3{font-size:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .ctext p{margin:2px 0 6px;font-size:13px;line-height:1.45;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .tags{flex-wrap:nowrap;overflow:hidden}
+  .tags span{font-size:12px;padding:2px 8px;white-space:nowrap}
+  .card .play{margin:0;width:auto;flex:none;min-height:44px;padding:0 14px}
+}
+
 /* reveal */
 .js .rv{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s cubic-bezier(.2,.8,.2,1);transition-delay:var(--d,0s)}
 .js .rv.in{opacity:1;transform:none}
@@ -226,7 +255,7 @@ dialog#sheet::backdrop{background:rgba(10,15,30,.5);backdrop-filter:blur(4px);an
 
 <div class="wrap">
   <header class="hero" id="top">
-    <div class="blob b1" id="blob1"></div><div class="blob b2" id="blob2"></div>
+    <div class="blob b1" id="blob1"></div>
     <div class="hero-grid">
     <div class="hero-text">
     <div class="hi rv">안녕하세요 👋</div>
@@ -248,7 +277,7 @@ dialog#sheet::backdrop{background:rgba(10,15,30,.5);backdrop-filter:blur(4px);an
   <section id="finder">
     <h2 class="rv">작업물</h2>
     <p class="sec-sub rv">검색하거나 태그로 골라 보세요. 컴퓨터에서는 카드를 누르면 QR 코드가 나와요.</p>
-    <div class="search rv"><input id="q" type="search" placeholder="이름이나 태그로 검색" aria-label="작업물 검색" autocomplete="off"></div>
+    <div class="search rv"><input id="q" type="search" placeholder="이름이나 태그로 검색 (예: Expo, three.js)" aria-label="작업물 검색" autocomplete="off"></div>
     <div class="fchips rv" id="fchips"></div>
   </section>
 
@@ -306,7 +335,16 @@ dialog#sheet::backdrop{background:rgba(10,15,30,.5);backdrop-filter:blur(4px);an
   <footer>© 2026 김인수 · <a href="mailto:agile.h2o@gmail.com">agile.h2o@gmail.com</a></footer>
 </div>
 
-<dialog id="sheet" aria-label="상세 정보">
+<dialog id="notice" class="sl" aria-label="토스 앱 안내">
+  <div class="panel">
+    <button class="x" id="noticeX" aria-label="닫기">✕</button>
+    <h3>토스 앱에서 열려요</h3>
+    <p class="desc">이 앱은 토스 앱 안에서만 열려요. 토스 앱이 설치되어 있어야 하고, 열리지 않으면 앱을 설치하거나 최신 버전으로 업데이트한 뒤 다시 눌러 주세요.</p>
+    <div class="sact"><a class="btn" href="https://toss.im" target="_blank" rel="noopener">토스 알아보기</a><button class="like" id="copyIntoss" type="button">링크 복사</button></div>
+  </div>
+</dialog>
+
+<dialog id="sheet" class="sl" aria-label="상세 정보">
   <div class="panel" id="panel">
     <div class="grab" id="grab"></div>
     <button class="x" id="closeBtn" aria-label="닫기">✕</button>
@@ -359,20 +397,22 @@ function paintThemeBtn(){const b=$("tbtn");if(b){b.textContent=curTheme()==="dar
 
 /* ── 필터·검색·카드 ── */
 let query="",tag="전체";
-const tagsList=["전체","앱","게임","Expo","앱인토스","three.js","PWA"];
+const tagsList=["전체","앱인토스","웹 앱","게임"];
 function matches(w){
   const q=query.trim().toLowerCase();
   const hit=!q||(w.t+w.d+w.g.join(" ")).toLowerCase().includes(q);
-  const tg=tag==="전체"||(tag==="앱"&&w.k==="app")||(tag==="게임"&&w.k==="game")||w.g.includes(tag);
+  const toss=w.g.includes("앱인토스");
+  const tg=tag==="전체"||(tag==="앱인토스"&&toss)||(tag==="웹 앱"&&w.k==="app"&&!toss)||(tag==="게임"&&w.k==="game");
   return hit&&tg;
 }
 /* 게임은 QR 코드로만 열립니다 (링크 없음). QR은 각 게임 주소를 미리 만들어 둔 것입니다. */
 const qrSVG=id=>{const q=QR[id];return q?`<svg role="img" aria-label="QR 코드" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${q.n} ${q.n}" shape-rendering="crispEdges"><path fill="#fff" d="M0 0h${q.n}v${q.n}H0z"/><path stroke="#000" d="${q.d}"/></svg>`:""};
 const cardHTML=w=>`<div class="card gcard" role="button" tabindex="0" data-id="${w.id}" aria-haspopup="dialog">
   <div class="chead">
-    <div class="lbox">${w.i?`<img class="ico" src="${w.i}" alt="${w.t} 로고">`:`<div class="ico">${w.t[0]}</div>`}</div>
+    <div class="lbox">${w.i?`<img class="ico" src="${w.i}" alt="${w.t} 로고" loading="lazy" decoding="async">`:`<div class="ico">${w.t[0]}</div>`}</div>
     <div class="ctext"><h3>${w.t}</h3><p>${w.d}</p>
     <div class="tags">${w.g.map(x=>`<span>${x}</span>`).join("")}</div></div>
+    <span class="qrcue" aria-hidden="true">QR 보기 ›</span>
   </div>
   <a class="play" href="${w.u}" target="_blank" rel="noopener">${w.k==="game"?"▶ 플레이":"▶ 열기"}</a></div>`;
 function render(first){
@@ -435,7 +475,19 @@ async function openSheet(id){
   paint(await getN(id));
   lb.onclick=async()=>{if(liked)return;liked=true;store.set("liked:"+id,"1");confetti(lb);const n=await addN(id);paint(n)};
 }
-document.addEventListener("click",e=>{if(e.target.closest("a"))return;const c=e.target.closest(".card");if(c)openSheet(c.dataset.id)});
+/* 토스 앱 링크(intoss://): 토스가 없어서 안 열리면 안내 창을 보여준다 */
+const notice=$("notice");let noticeUrl="";
+function openToss(url){
+  let left=false;const mark=()=>{left=true};
+  document.addEventListener("visibilitychange",mark,{once:true});addEventListener("pagehide",mark,{once:true});addEventListener("blur",mark,{once:true});
+  location.href=url;
+  setTimeout(()=>{if(!left){noticeUrl=url;if(sheet.open)sheet.close();if(!notice.open)notice.showModal()}},1600);
+}
+function toastMsg(m){const t=document.querySelector(".toast");if(!t)return;t.textContent=m;t.classList.add("on");clearTimeout(toastMsg.h);toastMsg.h=setTimeout(()=>t.classList.remove("on"),1800)}
+$("noticeX").onclick=()=>notice.close();
+notice.addEventListener("click",e=>{if(e.target===notice)notice.close()});
+$("copyIntoss").onclick=async()=>{try{await navigator.clipboard.writeText(noticeUrl);toastMsg("링크를 복사했어요")}catch(e){toastMsg(noticeUrl)}};
+document.addEventListener("click",e=>{const ta=e.target.closest('a[href^="intoss://"]');if(ta){e.preventDefault();openToss(ta.getAttribute("href"));return}if(e.target.closest("a"))return;const c=e.target.closest(".card");if(c)openSheet(c.dataset.id)});
 document.addEventListener("keydown",e=>{if((e.key==="Enter"||e.key===" ")&&e.target.classList&&e.target.classList.contains("card")){e.preventDefault();openSheet(e.target.dataset.id)}});
 $("closeBtn").onclick=()=>sheet.close();
 sheet.addEventListener("click",e=>{if(e.target===sheet)sheet.close()});
