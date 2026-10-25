@@ -201,7 +201,7 @@ dialog#sheet::backdrop{background:rgba(10,15,30,.5);backdrop-filter:blur(4px);an
 
 /* 웹(넓은 화면)의 카드: 로고 오른쪽에 이름, 그 아랫줄에 설명 */
 @media(min-width:700px){
-  #gameGrid,#appGrid{grid-template-columns:repeat(2,1fr)}
+  #gameGrid,#appGrid,#tossGrid{grid-template-columns:repeat(2,1fr)}
   .gcard{display:grid;grid-template-columns:auto 1fr;column-gap:16px;align-content:start}
   .gcard .ico{grid-column:1;grid-row:1/3;margin:0}
   .gcard h3{grid-column:2;grid-row:1;align-self:end}
@@ -248,18 +248,23 @@ dialog#sheet::backdrop{background:rgba(10,15,30,.5);backdrop-filter:blur(4px);an
     <div class="fchips rv" id="fchips"></div>
   </section>
 
-  <section id="apps">
-    <h2 class="rv">앱</h2>
-    <p class="sec-sub rv">일상에서 바로 쓰는 앱들이에요.</p>
-    <div class="grid" id="appGrid"></div>
-    <p class="empty" id="appEmpty">일치하는 앱이 없어요.</p>
+  <section id="toss">
+    <h2 class="rv">앱인토스</h2>
+    <p class="sec-sub rv">토스 앱 안에서 쓰는 미니앱이에요. 컴퓨터에서는 QR 코드를 휴대폰으로 스캔해 보세요.</p>
+    <div class="grid" id="tossGrid"></div>
   </section>
+
+  <section id="apps">
+    <h2 class="rv">웹 앱</h2>
+    <p class="sec-sub rv">브라우저에서 바로 열어 쓰는 앱이에요.</p>
+    <div class="grid" id="appGrid"></div>
+  </section>
+  <p class="empty" id="noneEmpty">일치하는 작업물이 없어요.</p>
 
   <section id="games">
     <h2 class="rv">게임</h2>
     <p class="sec-sub rv">컴퓨터에서는 QR 코드를 휴대폰으로 스캔하고, 휴대폰에서는 플레이 버튼을 눌러 즐겨 보세요.</p>
     <div class="grid" id="gameGrid"></div>
-    <p class="empty" id="gameEmpty">일치하는 게임이 없어요.</p>
   </section>
 
   <section id="stack">
@@ -365,12 +370,13 @@ const cardHTML=w=>`<div class="card gcard" role="button" tabindex="0" data-id="$
   <div class="gqr">${qrSVG(w.id)}</div><div class="scan">📱 카메라로 스캔</div><a class="play" href="${w.u}" target="_blank" rel="noopener">${w.k==="game"?"▶ 플레이":"▶ 열기"}</a></div>`;
 function render(first){
   const list=items.filter(matches);
-  const apps=list.filter(w=>w.k==="app"),games=list.filter(w=>w.k==="game");
+  const isToss=w=>w.g.includes("앱인토스");
+  const toss=list.filter(w=>w.k==="app"&&isToss(w)),apps=list.filter(w=>w.k==="app"&&!isToss(w)),games=list.filter(w=>w.k==="game");
   const fill=(el,arr)=>{el.innerHTML=arr.map((w,n)=>`<div class="cw ${first?"rv":"pop"}" style="--d:${n*.06}s">${cardHTML(w)}</div>`).join("")};
-  fill($("appGrid"),apps);fill($("gameGrid"),games);
-  $("appEmpty").style.display=apps.length?"none":"block";
-  $("gameEmpty").style.display=games.length?"none":"block";
-  $("apps").style.display=(!apps.length&&tag==="게임")?"none":"";
+  fill($("tossGrid"),toss);fill($("appGrid"),apps);fill($("gameGrid"),games);
+  const filtering=query.trim()!==""||tag!=="전체";
+  [["toss",toss],["apps",apps],["games",games]].forEach(([id,arr])=>{$(id).style.display=(arr.length||!filtering)?"":"none"});
+  $("noneEmpty").style.display=list.length?"none":"block";
   $("fchips").innerHTML=tagsList.map(t=>`<button type="button" class="${t===tag?"on":""}" data-tag="${t}">${t}</button>`).join("");
   if(first)reveal();
 }
