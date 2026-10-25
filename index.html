@@ -247,14 +247,14 @@ dialog#sheet::backdrop{background:rgba(10,15,30,.5);backdrop-filter:blur(4px);an
 
   <section id="finder">
     <h2 class="rv">작업물</h2>
-    <p class="sec-sub rv">검색하거나 태그로 골라 보세요. 카드를 누르면 자세히 볼 수 있어요.</p>
+    <p class="sec-sub rv">검색하거나 태그로 골라 보세요. 컴퓨터에서는 카드를 누르면 QR 코드가 나와요.</p>
     <div class="search rv"><input id="q" type="search" placeholder="이름이나 태그로 검색" aria-label="작업물 검색" autocomplete="off"></div>
     <div class="fchips rv" id="fchips"></div>
   </section>
 
   <section id="toss">
     <h2 class="rv">앱인토스</h2>
-    <p class="sec-sub rv">토스 앱 안에서 쓰는 미니앱이에요. 컴퓨터에서는 QR 코드를 휴대폰으로 스캔해 보세요.</p>
+    <p class="sec-sub rv">토스 앱 안에서 쓰는 미니앱이에요. 컴퓨터에서는 카드를 눌러 QR 코드를 휴대폰으로 스캔해 보세요.</p>
     <div class="grid" id="tossGrid"></div>
   </section>
 
@@ -267,7 +267,7 @@ dialog#sheet::backdrop{background:rgba(10,15,30,.5);backdrop-filter:blur(4px);an
 
   <section id="games">
     <h2 class="rv">게임</h2>
-    <p class="sec-sub rv">컴퓨터에서는 QR 코드를 휴대폰으로 스캔하고, 휴대폰에서는 플레이 버튼을 눌러 즐겨 보세요.</p>
+    <p class="sec-sub rv">컴퓨터에서는 카드를 눌러 QR 코드를 스캔하고, 휴대폰에서는 플레이 버튼을 눌러 즐겨 보세요.</p>
     <div class="grid" id="gameGrid"></div>
   </section>
 
@@ -373,7 +373,7 @@ const cardHTML=w=>`<div class="card gcard" role="button" tabindex="0" data-id="$
     <div class="ctext"><h3>${w.t}</h3><p>${w.d}</p>
     <div class="tags">${w.g.map(x=>`<span>${x}</span>`).join("")}</div></div>
   </div>
-  <div class="gqr">${qrSVG(w.id)}</div><div class="scan">📱 카메라로 스캔</div><a class="play" href="${w.u}" target="_blank" rel="noopener">${w.k==="game"?"▶ 플레이":"▶ 열기"}</a></div>`;
+  <a class="play" href="${w.u}" target="_blank" rel="noopener">${w.k==="game"?"▶ 플레이":"▶ 열기"}</a></div>`;
 function render(first){
   const list=items.filter(matches);
   const isToss=w=>w.g.includes("앱인토스");
