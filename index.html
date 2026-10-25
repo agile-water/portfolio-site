@@ -20,9 +20,9 @@ document.documentElement.classList.add("js");
 try{var t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}
 </script>
 <style>
-:root{--bg:#fff;--surface:#f2f4f6;--fg:#191f28;--sub:#4e5968;--line:#e5e8eb;--main:#0083f9;--main2:#7a5cff;--main-soft:#e8f3ff;--tagfg:#0062c4;--shadow:0 10px 30px rgba(0,30,80,.08);color-scheme:light}
-@media(prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#17171c;--surface:#202027;--fg:#f9fafb;--sub:#a1a7b0;--line:#2c2c35;--main-soft:#12304f;--tagfg:#7cc0ff;--shadow:0 10px 30px rgba(0,0,0,.4);color-scheme:dark}}
-:root[data-theme=dark]{--bg:#17171c;--surface:#202027;--fg:#f9fafb;--sub:#a1a7b0;--line:#2c2c35;--main-soft:#12304f;--tagfg:#7cc0ff;--shadow:0 10px 30px rgba(0,0,0,.4);color-scheme:dark}
+:root{--bg:#fff;--surface:#f2f4f6;--fg:#191f28;--sub:#4e5968;--line:#e5e8eb;--main:#0083f9;--main2:#7a5cff;--main-soft:#e8f3ff;--tagfg:#0062c4;--card:#fff;--line2:#d5dce3;--band:#f3f1ff;--shadow:0 10px 30px rgba(0,30,80,.08);color-scheme:light}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#17171c;--surface:#202027;--fg:#f9fafb;--sub:#a1a7b0;--line:#2c2c35;--main-soft:#12304f;--tagfg:#7cc0ff;--card:#23232b;--line2:#34343f;--band:rgba(122,92,255,.09);--shadow:0 10px 30px rgba(0,0,0,.4);color-scheme:dark}}
+:root[data-theme=dark]{--bg:#17171c;--surface:#202027;--fg:#f9fafb;--sub:#a1a7b0;--line:#2c2c35;--main-soft:#12304f;--tagfg:#7cc0ff;--card:#23232b;--line2:#34343f;--band:rgba(122,92,255,.09);--shadow:0 10px 30px rgba(0,0,0,.4);color-scheme:dark}
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;overflow-x:clip}
 html:has(dialog[open]){overflow:hidden}
@@ -84,7 +84,7 @@ h2{font-size:24px;margin-bottom:6px;letter-spacing:-.015em}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
 @media(min-width:560px){.grid{grid-template-columns:repeat(3,1fr)}}
 .cw{perspective:800px}
-.card{position:relative;display:block;width:100%;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:20px;overflow:hidden;
+.card{position:relative;display:block;width:100%;text-align:left;background:var(--card);border:1px solid var(--line2);box-shadow:0 1px 2px rgba(0,30,80,.05),0 6px 18px rgba(0,30,80,.06);border-radius:22px;padding:20px;overflow:hidden;
   transform:rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)) translateY(var(--ty,0px)) scale(var(--sc,1));transition:transform .18s ease-out,box-shadow .25s}
 .card:hover{--ty:-6px;box-shadow:var(--shadow)}
 .card:active{--sc:.97}
@@ -93,10 +93,10 @@ h2{font-size:24px;margin-bottom:6px;letter-spacing:-.015em}
 .card:hover::after{opacity:1}
 .ico{width:64px;height:64px;border-radius:18px;object-fit:cover;display:grid;place-items:center;background:var(--main-soft);color:var(--main);font-weight:800;font-size:24px;margin-bottom:14px;transition:transform .3s;border:1px solid var(--line)}
 .card:hover .ico{transform:scale(1.1) rotate(-5deg)}
-.card h3{font-size:17px}
+.card h3{font-size:18px}
 .card p{color:var(--sub);font-size:15px;margin:4px 0 12px}
 .tags{display:flex;gap:6px;flex-wrap:wrap}
-.tags span{font-size:13px;font-weight:600;padding:3px 9px;border-radius:999px;background:var(--main-soft);color:var(--tagfg)}
+.tags span{font-size:12px;font-weight:600;padding:2px 9px;border-radius:999px;background:transparent;border:1px solid var(--line2);color:var(--sub)}
 .go{position:absolute;top:18px;right:20px;color:var(--sub);transition:transform .2s,color .2s}
 .card:hover .go{transform:translate(3px,-3px);color:var(--main)}
 @keyframes pop{from{opacity:0;transform:scale(.9) translateY(10px)}}
@@ -215,9 +215,19 @@ dialog.sl::backdrop{background:rgba(10,15,30,.5);backdrop-filter:blur(4px);anima
 }
 @media(min-width:1100px){#gameGrid,#appGrid,#tossGrid{grid-template-columns:repeat(2,1fr)}}
 
+/* 섹션 제목 크기 + 개수 배지, 앱인토스 섹션 배경 띠, 소개의 기술 스택 */
+#toss h2,#apps h2,#games h2{font-size:22px}
+.cnt{font-size:13px;font-weight:700;color:var(--tagfg);background:var(--main-soft);padding:2px 10px;border-radius:999px;margin-left:6px;vertical-align:middle}
+#toss{position:relative;isolation:isolate}
+#toss::before{content:"";position:absolute;z-index:-1;top:0;bottom:0;left:50%;width:100vw;translate:-50% 0;pointer-events:none;background:var(--band);
+  -webkit-mask-image:linear-gradient(to bottom,transparent,#000 8%,#000 92%,transparent);mask-image:linear-gradient(to bottom,transparent,#000 8%,#000 92%,transparent)}
+.tech-h{font-size:18px;margin:28px 0 12px;letter-spacing:-.01em}
+#about{padding-top:48px}
+#about h2{margin-bottom:18px}
+
 /* 컴퓨터(마우스): 카드 끝에 "QR 보기" 표시 */
 .qrcue{display:none}
-@media(hover:hover) and (pointer:fine){.qrcue{display:inline-flex;align-items:center;align-self:center;margin-left:auto;font-size:13px;font-weight:700;color:var(--tagfg);padding:6px 12px;border-radius:999px;background:var(--main-soft);white-space:nowrap;transition:transform .2s}.card:hover .qrcue{transform:translateX(3px)}}
+@media(hover:hover) and (pointer:fine){.qrcue{display:inline-flex;align-items:center;align-self:center;margin-left:auto;font-size:13px;font-weight:700;color:#fff;padding:8px 14px;border-radius:999px;background:var(--main);white-space:nowrap;transition:transform .2s,box-shadow .2s}.card:hover .qrcue{transform:translateX(3px);box-shadow:0 6px 14px rgba(0,131,249,.35)}}
 
 /* 휴대폰: 가로형 카드(로고·이름·설명·태그 + 작은 열기 버튼)로 줄이고, 첫 화면도 압축 */
 @media(max-width:699px){
@@ -274,6 +284,20 @@ dialog.sl::backdrop{background:rgba(10,15,30,.5);backdrop-filter:blur(4px);anima
     </div>
   </header>
 
+  <section id="about">
+    <h2 class="rv">소개</h2>
+    <div class="about-row rv" id="aboutRow">
+      <img class="avatar" src="img/profile.webp" alt="김인수 프로필 일러스트" width="264" height="264" loading="lazy">
+      <p id="aboutText"></p>
+    </div>
+    <h3 class="tech-h rv">기술 스택</h3>
+    <div class="chips" id="chips"></div>
+  </section>
+  <section id="career" hidden>
+    <h2 class="rv">이력·경력</h2>
+    <div class="tl rv" id="tl"></div>
+  </section>
+
   <section id="finder">
     <h2 class="rv">작업물</h2>
     <p class="sec-sub rv">검색하거나 태그로 골라 보세요. 컴퓨터에서는 카드를 누르면 QR 코드가 나와요.</p>
@@ -282,40 +306,22 @@ dialog.sl::backdrop{background:rgba(10,15,30,.5);backdrop-filter:blur(4px);anima
   </section>
 
   <section id="toss">
-    <h2 class="rv">앱인토스</h2>
+    <h2 class="rv">앱인토스 <span class="cnt" id="cntToss"></span></h2>
     <p class="sec-sub rv">토스 앱 안에서 쓰는 미니앱이에요. 컴퓨터에서는 카드를 눌러 QR 코드를 휴대폰으로 스캔해 보세요.</p>
     <div class="grid" id="tossGrid"></div>
   </section>
 
   <section id="apps">
-    <h2 class="rv">웹 앱</h2>
+    <h2 class="rv">웹 앱 <span class="cnt" id="cntApps"></span></h2>
     <p class="sec-sub rv">브라우저에서 바로 열어 쓰는 앱이에요.</p>
     <div class="grid" id="appGrid"></div>
   </section>
   <p class="empty" id="noneEmpty">일치하는 작업물이 없어요.</p>
 
   <section id="games">
-    <h2 class="rv">게임</h2>
+    <h2 class="rv">게임 <span class="cnt" id="cntGames"></span></h2>
     <p class="sec-sub rv">컴퓨터에서는 카드를 눌러 QR 코드를 스캔하고, 휴대폰에서는 플레이 버튼을 눌러 즐겨 보세요.</p>
     <div class="grid" id="gameGrid"></div>
-  </section>
-
-  <section id="stack">
-    <h2 class="rv">기술 스택</h2>
-    <div class="chips" id="chips"></div>
-  </section>
-
-  <section id="about" hidden>
-    <h2 class="rv">소개</h2>
-    <div class="about-row rv">
-      <img class="avatar" src="img/profile.webp" alt="김인수 프로필 일러스트" width="264" height="264" loading="lazy">
-      <p id="aboutText"></p>
-    </div>
-  </section>
-
-  <section id="career" hidden>
-    <h2 class="rv">이력·경력</h2>
-    <div class="tl rv" id="tl"></div>
   </section>
 
   <section id="contact">
@@ -367,7 +373,7 @@ const items=[
  {id:"walk",k:"app",t:"오늘산책",d:"날씨로 산책하기 좋은 시간을 알려주는 앱",u:"intoss://today-walk-day",i:"img/walk.png",g:["앱인토스","날씨"]},
  {id:"spelling",k:"app",t:"맞춤법 1000제",d:"헷갈리는 맞춤법을 퀴즈로 익히는 앱",u:"intoss://korean-spelling-1000",i:"img/spelling.png",g:["앱인토스","퀴즈"]},
  {id:"palm",k:"app",t:"손금",d:"손바닥 사진으로 보는 나의 손금 풀이",u:"intoss://palmist",i:"img/palm-logo.png",g:["앱인토스","손금"]},
- {id:"playgrounds",k:"app",t:"모든 놀이터",d:"우리 동네 어린이 놀이터를 지도에서 찾는 앱",u:"intoss://all-playgrounds",i:"img/playgrounds-logo.png",g:["앱인토스","놀이터"]},
+ {id:"playgrounds",k:"app",t:"모든 놀이터",d:"동네 어린이 놀이터를 지도에서 찾는 앱",u:"intoss://all-playgrounds",i:"img/playgrounds-logo.png",g:["앱인토스","놀이터"]},
  {id:"backtest",k:"app",t:"주식 백테스트",d:"과거 시세로 투자 전략을 시험해 보는 앱",u:"intoss://stock-backtest",i:"img/backtest.png",g:["앱인토스","투자"]},
  {id:"fortune",k:"app",t:"매일운세",d:"오늘의 운세와 사주를 매일 확인하는 앱",u:"intoss://daily-fortune-saju",i:"img/fortune.png",g:["앱인토스","운세"]},
  {id:"eventory",k:"app",t:"이벤토리",d:"행사·이벤트를 놓치지 않게 알려주는 앱",u:"intoss://eventory",i:"img/eventory-toss.png",g:["앱인토스","이벤트"]},
@@ -424,6 +430,7 @@ function render(first){
   const filtering=query.trim()!==""||tag!=="전체";
   [["toss",toss],["apps",apps],["games",games]].forEach(([id,arr])=>{$(id).style.display=(arr.length||!filtering)?"":"none"});
   $("noneEmpty").style.display=list.length?"none":"block";
+  $("cntToss").textContent=toss.length;$("cntApps").textContent=apps.length;$("cntGames").textContent=games.length;
   $("fchips").innerHTML=tagsList.map(t=>`<button type="button" class="${t===tag?"on":""}" data-tag="${t}">${t}</button>`).join("");
   if(first)reveal();
 }
@@ -501,8 +508,8 @@ sheet.addEventListener("click",e=>{if(e.target===sheet)sheet.close()});
 
 /* ── 기술 스택, 빈칸 섹션, 내비 ── */
 $("chips").innerHTML=stack.map((s,n)=>`<span class="chip rv" style="--d:${n*.05}s">${s}</span>`).join("");
-const nav=[["작업물","finder"],["게임","games"],["기술","stack"]];
-if(profile.about){$("about").hidden=false;$("aboutText").textContent=profile.about;nav.push(["소개","about"])}
+const nav=[["소개","about"],["작업물","finder"],["게임","games"]];
+$("aboutRow").hidden=!profile.about;$("aboutText").textContent=profile.about;
 if(profile.career.length){$("career").hidden=false;$("tl").innerHTML=profile.career.map(c=>`<div><b>${c.t}</b><span>${c.y}${c.s?" · "+c.s:""}</span></div>`).join("");nav.push(["이력","career"])}
 nav.push(["연락","contact"]);
 $("navlinks").innerHTML=`<a href="#top">김인수</a>`+nav.map(([n,id])=>`<a href="#${id}" data-id="${id}">${n}</a>`).join("")+`<button class="tbtn" id="tbtn" type="button"></button>`;
