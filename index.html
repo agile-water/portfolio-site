@@ -102,16 +102,14 @@ h2{font-size:24px;margin-bottom:6px;letter-spacing:-.015em}
 @keyframes pop{from{opacity:0;transform:scale(.9) translateY(10px)}}
 .cw.pop{animation:pop .4s cubic-bezier(.2,.8,.2,1) both;animation-delay:var(--d,0s)}
 
-/* featured game + mini game */
-.feature{display:flex;gap:22px;align-items:center;flex-wrap:wrap;background:linear-gradient(135deg,var(--main-soft),var(--surface));border:1px solid var(--line);border-radius:26px;padding:24px;margin-bottom:12px}
-.qr{width:150px;flex:none;border-radius:16px;overflow:hidden;box-shadow:var(--shadow);background:#fff;transition:transform .3s}
-.qr:hover{transform:scale(1.05) rotate(-2deg)}
-.qr svg{display:block;width:100%}
-.finfo{flex:1;min-width:200px}
-.badge{display:inline-block;font-size:12px;font-weight:700;color:#fff;background:linear-gradient(90deg,var(--main),var(--main2));padding:3px 10px;border-radius:999px}
-.finfo h3{font-size:22px;margin:8px 0 2px;display:flex;align-items:center;gap:10px}
-.finfo h3 img{width:36px;height:36px;border-radius:10px}
-.finfo p{color:var(--sub);margin:4px 0 14px;font-size:15px}
+/* 게임 QR */
+.gqr{margin-top:14px;width:100%;max-width:150px;border-radius:14px;overflow:hidden;background:#fff;box-shadow:var(--shadow);border:1px solid var(--line);transition:transform .3s}
+.card:hover .gqr{transform:scale(1.04)}
+.gqr svg{display:block;width:100%}
+.scan{font-size:13px;color:var(--sub);margin-top:8px;font-weight:600}
+.sqr{width:200px;max-width:70%;border-radius:18px;overflow:hidden;background:#fff;box-shadow:var(--shadow);border:1px solid var(--line);margin-top:18px}
+.sqr svg{display:block;width:100%}
+.shint{color:var(--sub);font-size:14px;margin-top:10px}
 
 #games{position:relative;isolation:isolate}
 #games::before{content:"";position:absolute;z-index:-1;top:0;bottom:0;left:50%;width:100vw;translate:-50% 0;pointer-events:none;
@@ -162,9 +160,7 @@ dialog#sheet::backdrop{background:rgba(10,15,30,.5);backdrop-filter:blur(4px);an
 @media(max-width:700px){
   dialog#sheet{margin:auto 0 0;width:100%}
   .panel{border-radius:28px 28px 0 0;border-bottom:0;padding-bottom:calc(24px + env(safe-area-inset-bottom))}
-  .qr,.badge{display:none}.finfo{min-width:0}
 }
-@media(hover:none){.qr,.badge{display:none}.finfo{min-width:0}}
 
 /* 넓은 화면 */
 .search{max-width:520px}
@@ -182,9 +178,8 @@ dialog#sheet::backdrop{background:rgba(10,15,30,.5);backdrop-filter:blur(4px);an
   .grid{grid-template-columns:repeat(4,1fr);gap:16px}
   .card{padding:24px}
   .ico{width:72px;height:72px;border-radius:20px}
-  .feature{padding:32px 36px;gap:36px}
-  .qr{width:180px}
-  .finfo h3{font-size:26px}
+  #gameGrid{grid-template-columns:repeat(3,1fr)}
+  .gqr{max-width:170px}
   .avatar{width:180px;height:180px}
   #aboutText{font-size:18px;max-width:560px}
   .about-row{gap:36px}
@@ -240,16 +235,7 @@ dialog#sheet::backdrop{background:rgba(10,15,30,.5);backdrop-filter:blur(4px);an
 
   <section id="games">
     <h2 class="rv">게임</h2>
-    <p class="sec-sub rv">가볍게 즐기는 게임들이에요.</p>
-    <div class="feature rv" id="feature">
-      <div class="qr"><svg role="img" aria-label="농구왕 QR 코드" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 31 31" shape-rendering="crispEdges"><path fill="#ffffff" d="M0 0h31v31H0z"/><path stroke="#000000" d="M1 1.5h7m1 0h1m2 0h1m1 0h3m3 0h2m1 0h7M1 2.5h1m5 0h1m1 0h2m3 0h1m2 0h2m2 0h1m1 0h1m5 0h1M1 3.5h1m1 0h3m1 0h1m3 0h1m1 0h1m3 0h1m2 0h1m2 0h1m1 0h3m1 0h1M1 4.5h1m1 0h3m1 0h1m1 0h1m1 0h2m2 0h2m1 0h1m1 0h2m1 0h1m1 0h3m1 0h1M1 5.5h1m1 0h3m1 0h1m3 0h1m1 0h1m1 0h1m1 0h1m2 0h1m2 0h1m1 0h3m1 0h1M1 6.5h1m5 0h1m2 0h1m3 0h1m1 0h6m1 0h1m5 0h1M1 7.5h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7M9 8.5h2m1 0h1m3 0h4M1 9.5h1m1 0h2m1 0h3m4 0h2m1 0h1m1 0h1m1 0h1m2 0h1m2 0h1m1 0h2M3 10.5h1m4 0h2m1 0h6m1 0h4m1 0h3m3 0h1M3 11.5h1m2 0h3m1 0h2m2 0h1m2 0h1m1 0h1m1 0h1m2 0h1m2 0h2M1 12.5h1m1 0h4m1 0h2m1 0h1m1 0h1m3 0h1m3 0h2m6 0h1M1 13.5h4m2 0h2m3 0h2m1 0h2m1 0h1m1 0h1m1 0h1m1 0h1m1 0h2M1 14.5h1m1 0h1m1 0h1m2 0h1m2 0h1m3 0h1m1 0h2m1 0h2m1 0h1m3 0h3M2 15.5h2m3 0h1m1 0h2m3 0h1m1 0h2m2 0h1m1 0h1m1 0h2m1 0h3M1 16.5h1m2 0h1m5 0h4m1 0h1m1 0h1m3 0h1m2 0h1m3 0h1M2 17.5h4m1 0h2m6 0h3m1 0h1m2 0h1m1 0h3m1 0h1M3 18.5h1m1 0h1m3 0h1m1 0h3m1 0h1m1 0h1m1 0h1m1 0h2m1 0h1m1 0h3M1 19.5h1m4 0h4m1 0h1m2 0h4m1 0h1m1 0h2m1 0h1m2 0h1M3 20.5h2m1 0h1m1 0h2m4 0h2m2 0h1m1 0h1m1 0h2m1 0h1m1 0h1M2 21.5h1m1 0h1m1 0h3m3 0h4m1 0h3m1 0h7M9 22.5h4m3 0h2m3 0h1m3 0h5M1 23.5h7m1 0h1m1 0h1m1 0h1m1 0h2m1 0h1m1 0h2m1 0h1m1 0h2m1 0h1M1 24.5h1m5 0h1m1 0h1m2 0h5m4 0h1m3 0h2m2 0h1M1 25.5h1m1 0h3m1 0h1m2 0h1m6 0h1m1 0h1m1 0h5m1 0h1m1 0h1M1 26.5h1m1 0h3m1 0h1m1 0h2m1 0h3m5 0h1m1 0h1m1 0h3m1 0h1M1 27.5h1m1 0h3m1 0h1m1 0h2m2 0h3m2 0h2m1 0h1m2 0h1m2 0h1m1 0h1M1 28.5h1m5 0h1m6 0h3m1 0h2m1 0h3m1 0h2m1 0h1M1 29.5h7m1 0h1m4 0h1m3 0h4m2 0h2m2 0h1"/></svg></div>
-      <div class="finfo">
-        <span class="badge">QR로 바로 플레이</span>
-        <h3><img src="img/hoops.png" alt="농구왕 로고">농구왕</h3>
-        <p>3D 농구 슈팅 게임. 컴퓨터에서는 QR을 휴대폰으로 찍어 보세요.</p>
-        <a class="btn" href="https://hoops-shoot.expo.app" target="_blank" rel="noopener">바로 플레이</a>
-      </div>
-    </div>
+    <p class="sec-sub rv">휴대폰 카메라로 QR 코드를 스캔하면 플레이할 수 있어요.</p>
     <div class="grid" id="gameGrid"></div>
     <p class="empty" id="gameEmpty">일치하는 게임이 없어요.</p>
   </section>
@@ -312,12 +298,13 @@ const items=[
  {id:"mwobogi",k:"app",t:"뭐보지?",d:"본 영화·드라마를 기록하는 시청 기록 앱",u:"https://mwobogi.expo.app",i:"img/mwobogi.png",g:["Expo","TMDB"]},
  {id:"wordbook",k:"app",t:"단어모아",d:"나만의 단어장으로 외우는 학습 앱",u:"https://agilewater-wordbook.expo.app",i:"img/wordbook.png",g:["Expo","학습"]},
  {id:"hamster",k:"game",t:"햄스터 키우기",d:"매일 돌보며 키우는 햄스터",u:"https://hamster-keeper.expo.app",i:"img/hamster.png",g:["PWA","육성"]},
- {id:"hoops",k:"game",feat:true,t:"농구왕",d:"3D 농구 슈팅 게임",u:"https://hoops-shoot.expo.app",i:"img/hoops.png",g:["three.js","3D"]},
+ {id:"hoops",k:"game",t:"농구왕",d:"3D 농구 슈팅 게임",u:"https://hoops-shoot.expo.app",i:"img/hoops.png",g:["three.js","3D"]},
  {id:"soccer",k:"game",t:"축구 슈팅",d:"페널티킥 서바이벌",u:"https://soccer-shoot.expo.app",i:"img/soccer.svg",g:["three.js","3D"]},
  {id:"homerun",k:"game",t:"홈런 더비",d:"타이밍으로 홈런을 노리는 야구 게임",u:"https://homerun-derby.expo.app",i:"img/homerun.svg",g:["three.js","3D"]},
  {id:"bowling",k:"game",t:"볼링왕",d:"스와이프로 던지는 10프레임 볼링",u:"https://bowling-king.expo.app",i:"img/bowling.png",g:["three.js","3D"]},
  {id:"healing",k:"game",t:"힐링캠프",d:"7가지 힐링 미니게임 모음",u:"https://healing-camp.expo.app",i:"img/healing.png",g:["three.js","미니게임"]}
 ];
+const QR={"hoops":{"n":31,"d":"M1 1.5h7m1 0h1m2 0h1m1 0h3m3 0h2m1 0h7M1 2.5h1m5 0h1m1 0h2m3 0h1m2 0h2m2 0h1m1 0h1m5 0h1M1 3.5h1m1 0h3m1 0h1m3 0h1m1 0h1m3 0h1m2 0h1m2 0h1m1 0h3m1 0h1M1 4.5h1m1 0h3m1 0h1m1 0h1m1 0h2m2 0h2m1 0h1m1 0h2m1 0h1m1 0h3m1 0h1M1 5.5h1m1 0h3m1 0h1m3 0h1m1 0h1m1 0h1m1 0h1m2 0h1m2 0h1m1 0h3m1 0h1M1 6.5h1m5 0h1m2 0h1m3 0h1m1 0h6m1 0h1m5 0h1M1 7.5h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7M9 8.5h2m1 0h1m3 0h4M1 9.5h1m1 0h2m1 0h3m4 0h2m1 0h1m1 0h1m1 0h1m2 0h1m2 0h1m1 0h2M3 10.5h1m4 0h2m1 0h6m1 0h4m1 0h3m3 0h1M3 11.5h1m2 0h3m1 0h2m2 0h1m2 0h1m1 0h1m1 0h1m2 0h1m2 0h2M1 12.5h1m1 0h4m1 0h2m1 0h1m1 0h1m3 0h1m3 0h2m6 0h1M1 13.5h4m2 0h2m3 0h2m1 0h2m1 0h1m1 0h1m1 0h1m1 0h1m1 0h2M1 14.5h1m1 0h1m1 0h1m2 0h1m2 0h1m3 0h1m1 0h2m1 0h2m1 0h1m3 0h3M2 15.5h2m3 0h1m1 0h2m3 0h1m1 0h2m2 0h1m1 0h1m1 0h2m1 0h3M1 16.5h1m2 0h1m5 0h4m1 0h1m1 0h1m3 0h1m2 0h1m3 0h1M2 17.5h4m1 0h2m6 0h3m1 0h1m2 0h1m1 0h3m1 0h1M3 18.5h1m1 0h1m3 0h1m1 0h3m1 0h1m1 0h1m1 0h1m1 0h2m1 0h1m1 0h3M1 19.5h1m4 0h4m1 0h1m2 0h4m1 0h1m1 0h2m1 0h1m2 0h1M3 20.5h2m1 0h1m1 0h2m4 0h2m2 0h1m1 0h1m1 0h2m1 0h1m1 0h1M2 21.5h1m1 0h1m1 0h3m3 0h4m1 0h3m1 0h7M9 22.5h4m3 0h2m3 0h1m3 0h5M1 23.5h7m1 0h1m1 0h1m1 0h1m1 0h2m1 0h1m1 0h2m1 0h1m1 0h2m1 0h1M1 24.5h1m5 0h1m1 0h1m2 0h5m4 0h1m3 0h2m2 0h1M1 25.5h1m1 0h3m1 0h1m2 0h1m6 0h1m1 0h1m1 0h5m1 0h1m1 0h1M1 26.5h1m1 0h3m1 0h1m1 0h2m1 0h3m5 0h1m1 0h1m1 0h3m1 0h1M1 27.5h1m1 0h3m1 0h1m1 0h2m2 0h3m2 0h2m1 0h1m2 0h1m2 0h1m1 0h1M1 28.5h1m5 0h1m6 0h3m1 0h2m1 0h3m1 0h2m1 0h1M1 29.5h7m1 0h1m4 0h1m3 0h4m2 0h2m2 0h1"},"hamster":{"n":31,"d":"M1 1.5h7m2 0h1m4 0h1m2 0h4m1 0h7M1 2.5h1m5 0h1m1 0h4m1 0h1m4 0h2m2 0h1m5 0h1M1 3.5h1m1 0h3m1 0h1m3 0h1m4 0h1m2 0h3m1 0h1m1 0h3m1 0h1M1 4.5h1m1 0h3m1 0h1m3 0h2m1 0h1m2 0h1m1 0h3m1 0h1m1 0h3m1 0h1M1 5.5h1m1 0h3m1 0h1m1 0h1m2 0h3m2 0h1m1 0h2m2 0h1m1 0h3m1 0h1M1 6.5h1m5 0h1m5 0h1m1 0h7m1 0h1m5 0h1M1 7.5h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7M10 8.5h3m3 0h1m1 0h4M1 9.5h1m1 0h1m1 0h1m1 0h1m3 0h1m5 0h2m2 0h1m3 0h1m2 0h1M2 10.5h1m1 0h2m2 0h3m3 0h1m1 0h2m1 0h1m1 0h1m1 0h1m2 0h1m2 0h1M1 11.5h3m1 0h1m1 0h2m1 0h2m1 0h1m1 0h3m1 0h1m1 0h4m2 0h3M1 12.5h3m1 0h2m1 0h2m1 0h2m1 0h2m1 0h2m1 0h1m1 0h1m1 0h1m3 0h1M1 13.5h2m1 0h2m1 0h1m1 0h1m3 0h1m1 0h2m1 0h1m3 0h3m1 0h1m1 0h2M3 14.5h2m4 0h2m1 0h1m2 0h2m1 0h2m1 0h3m2 0h1m2 0h1M1 15.5h4m1 0h3m1 0h1m2 0h2m4 0h1m2 0h5m1 0h2M1 16.5h1m3 0h2m1 0h1m4 0h1m2 0h1m1 0h1m1 0h2m3 0h2m1 0h1M1 17.5h2m4 0h1m1 0h3m5 0h2m2 0h3m2 0h1m1 0h2M2 18.5h4m2 0h2m3 0h2m1 0h2m3 0h1m1 0h1m2 0h2m1 0h1M1 19.5h1m4 0h8m1 0h4m4 0h3m2 0h2M2 20.5h1m1 0h3m1 0h2m4 0h2m1 0h8m1 0h1m1 0h1M1 21.5h1m2 0h1m2 0h4m1 0h1m2 0h5m1 0h5M9 22.5h2m1 0h1m2 0h2m3 0h2m3 0h1m1 0h3M1 23.5h7m3 0h1m2 0h1m2 0h2m1 0h2m1 0h1m1 0h2m1 0h2M1 24.5h1m5 0h1m3 0h1m1 0h1m2 0h1m1 0h1m2 0h1m3 0h2m2 0h1M1 25.5h1m1 0h3m1 0h1m1 0h3m1 0h1m4 0h1m2 0h5m2 0h1M1 26.5h1m1 0h3m1 0h1m3 0h1m1 0h1m3 0h2m2 0h2m1 0h2m1 0h1M1 27.5h1m1 0h3m1 0h1m1 0h2m4 0h1m1 0h1m1 0h1m4 0h3m2 0h1M1 28.5h1m5 0h1m5 0h4m1 0h4m1 0h2m3 0h1M1 29.5h7m1 0h3m1 0h3m2 0h1m1 0h4m4 0h2"},"soccer":{"n":31,"d":"M1 1.5h7m2 0h1m4 0h1m2 0h1m1 0h1m2 0h7M1 2.5h1m5 0h1m1 0h1m1 0h1m2 0h1m3 0h1m1 0h2m1 0h1m5 0h1M1 3.5h1m1 0h3m1 0h1m2 0h1m1 0h2m2 0h1m2 0h1m3 0h1m1 0h3m1 0h1M1 4.5h1m1 0h3m1 0h1m3 0h2m1 0h1m2 0h1m1 0h2m2 0h1m1 0h3m1 0h1M1 5.5h1m1 0h3m1 0h1m1 0h2m1 0h1m1 0h1m2 0h1m2 0h1m2 0h1m1 0h3m1 0h1M1 6.5h1m5 0h1m3 0h2m2 0h4m1 0h1m2 0h1m5 0h1M1 7.5h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7M11 8.5h1m1 0h1m2 0h1m1 0h1m2 0h1M1 9.5h1m1 0h1m1 0h1m1 0h1m2 0h1m1 0h1m4 0h2m1 0h2m3 0h1m2 0h1M2 10.5h3m1 0h1m1 0h1m1 0h5m1 0h2m4 0h2m2 0h1m2 0h1M1 11.5h1m2 0h1m1 0h2m1 0h1m5 0h4m2 0h4m2 0h3M1 12.5h1m1 0h2m3 0h1m2 0h5m1 0h5m2 0h1m3 0h1M2 13.5h1m1 0h2m1 0h7m1 0h2m1 0h2m2 0h2m2 0h1m1 0h2M4 14.5h3m1 0h1m4 0h1m1 0h2m4 0h1m1 0h1m2 0h1m2 0h1M2 15.5h2m1 0h1m1 0h1m1 0h3m2 0h1m3 0h1m4 0h2m1 0h1m1 0h2M1 16.5h1m4 0h1m5 0h2m2 0h1m1 0h1m2 0h4m1 0h1m1 0h1M1 17.5h2m4 0h1m1 0h2m6 0h2m1 0h2m1 0h1m2 0h1m1 0h2M2 18.5h1m2 0h2m2 0h1m4 0h1m1 0h3m2 0h3m2 0h2m1 0h1M1 19.5h1m5 0h1m1 0h1m2 0h2m1 0h3m1 0h1m2 0h1m1 0h1m3 0h2M2 20.5h4m5 0h2m1 0h2m1 0h3m1 0h1m3 0h2m1 0h1M1 21.5h1m2 0h6m1 0h1m3 0h2m1 0h1m1 0h6M9 22.5h1m1 0h3m1 0h2m1 0h4m3 0h1m1 0h3M1 23.5h7m2 0h3m1 0h1m4 0h3m1 0h1m1 0h2m1 0h2M1 24.5h1m5 0h1m2 0h2m4 0h1m1 0h1m2 0h1m3 0h2M1 25.5h1m1 0h3m1 0h1m1 0h1m1 0h3m3 0h2m2 0h5m2 0h1M1 26.5h1m1 0h3m1 0h1m3 0h1m1 0h1m2 0h5m3 0h2m1 0h1M1 27.5h1m1 0h3m1 0h1m1 0h1m2 0h6m1 0h1m2 0h1m1 0h3m2 0h1M1 28.5h1m5 0h1m6 0h2m1 0h2m1 0h3m2 0h1m2 0h1M1 29.5h7m1 0h2m5 0h2m1 0h4m2 0h2m1 0h2"},"homerun":{"n":31,"d":"M1 1.5h7m1 0h1m2 0h1m1 0h3m2 0h3m1 0h7M1 2.5h1m5 0h1m1 0h1m1 0h4m2 0h3m1 0h1m1 0h1m5 0h1M1 3.5h1m1 0h3m1 0h1m2 0h1m1 0h2m3 0h1m1 0h1m1 0h1m1 0h1m1 0h3m1 0h1M1 4.5h1m1 0h3m1 0h1m1 0h1m5 0h2m1 0h1m1 0h1m2 0h1m1 0h3m1 0h1M1 5.5h1m1 0h3m1 0h1m2 0h2m3 0h1m1 0h1m1 0h3m1 0h1m1 0h3m1 0h1M1 6.5h1m5 0h1m3 0h4m1 0h2m2 0h2m1 0h1m5 0h1M1 7.5h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7M9 8.5h4m3 0h3m2 0h1M1 9.5h1m1 0h2m1 0h3m5 0h1m1 0h1m1 0h2m1 0h1m1 0h1m2 0h1m1 0h2M2 10.5h2m1 0h2m4 0h1m2 0h3m3 0h2m1 0h3m3 0h1M1 11.5h2m4 0h1m1 0h3m2 0h1m2 0h2m2 0h1m5 0h2M3 12.5h1m8 0h1m4 0h1m6 0h1m4 0h1M3 13.5h6m2 0h3m1 0h2m1 0h1m7 0h2M1 14.5h2m1 0h1m3 0h2m1 0h2m2 0h1m1 0h1m2 0h1m1 0h2m3 0h3M4 15.5h4m3 0h1m1 0h2m1 0h5m1 0h3m2 0h3M1 16.5h2m6 0h1m1 0h1m3 0h1m1 0h1m2 0h1m3 0h1m3 0h1M1 17.5h3m3 0h1m1 0h1m5 0h3m4 0h1m1 0h3m1 0h1M4 18.5h3m3 0h1m4 0h1m1 0h2m2 0h1m2 0h1m1 0h3M1 19.5h1m3 0h1m1 0h5m1 0h6m2 0h1m1 0h2m2 0h1M6 20.5h1m1 0h1m2 0h1m2 0h2m2 0h1m4 0h1m1 0h1m1 0h1M2 21.5h6m1 0h1m2 0h1m1 0h2m1 0h11M9 22.5h5m2 0h2m1 0h1m1 0h1m3 0h5M1 23.5h7m1 0h2m1 0h1m2 0h2m1 0h1m1 0h2m1 0h1m1 0h2m1 0h1M1 24.5h1m5 0h1m1 0h1m1 0h6m2 0h1m1 0h1m3 0h2M1 25.5h1m1 0h3m1 0h1m5 0h1m4 0h1m2 0h5m1 0h1m1 0h1M1 26.5h1m1 0h3m1 0h1m1 0h1m2 0h3m3 0h2m1 0h1m2 0h3m1 0h1M1 27.5h1m1 0h3m1 0h1m1 0h1m1 0h1m3 0h1m1 0h1m6 0h1m2 0h1m1 0h1M1 28.5h1m5 0h1m5 0h1m2 0h1m2 0h1m1 0h1m1 0h1m1 0h2m1 0h1M1 29.5h7m1 0h2m1 0h1m4 0h1m1 0h4m1 0h2m2 0h1"},"bowling":{"n":31,"d":"M1 1.5h7m3 0h2m1 0h3m6 0h7M1 2.5h1m5 0h1m1 0h2m2 0h1m2 0h1m2 0h1m1 0h1m1 0h1m5 0h1M1 3.5h1m1 0h3m1 0h1m1 0h1m3 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h3m1 0h1M1 4.5h1m1 0h3m1 0h1m1 0h5m1 0h2m1 0h1m2 0h1m1 0h1m1 0h3m1 0h1M1 5.5h1m1 0h3m1 0h1m2 0h1m1 0h1m1 0h3m3 0h2m1 0h1m1 0h3m1 0h1M1 6.5h1m5 0h1m3 0h1m2 0h2m1 0h1m1 0h1m3 0h1m5 0h1M1 7.5h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7M9 8.5h3m1 0h2m4 0h3M1 9.5h1m5 0h1m1 0h2m1 0h2m1 0h2m1 0h1m1 0h1m1 0h2m2 0h3M2 10.5h1m1 0h1m1 0h1m1 0h2m1 0h2m2 0h1m2 0h4m2 0h2m1 0h2M1 11.5h4m2 0h2m2 0h1m1 0h1m4 0h1m2 0h3m1 0h1M2 12.5h2m2 0h1m1 0h2m2 0h2m1 0h3m2 0h3m1 0h1m1 0h1M1 13.5h3m1 0h1m1 0h1m1 0h1m1 0h5m3 0h3m1 0h2m4 0h1M1 14.5h1m1 0h1m1 0h1m3 0h1m4 0h2m2 0h4m1 0h3m2 0h2M2 15.5h1m4 0h2m3 0h1m1 0h5m4 0h2m1 0h2M3 16.5h1m1 0h2m3 0h3m1 0h2m1 0h1m1 0h2m3 0h2m1 0h1m1 0h1M1 17.5h2m1 0h5m1 0h1m1 0h1m2 0h2m1 0h1m1 0h1m3 0h1m1 0h2M1 18.5h1m1 0h1m4 0h1m1 0h2m1 0h1m3 0h1m1 0h3m1 0h3m1 0h3M1 19.5h10m1 0h1m1 0h2m1 0h4m2 0h1m2 0h1m2 0h1M1 20.5h1m1 0h1m2 0h1m1 0h3m4 0h3m4 0h3M1 21.5h1m1 0h1m3 0h1m1 0h1m1 0h1m5 0h2m1 0h6m1 0h3M9 22.5h4m1 0h1m2 0h1m3 0h1m3 0h2M1 23.5h7m2 0h2m2 0h4m1 0h3m1 0h1m1 0h3M1 24.5h1m5 0h1m4 0h3m4 0h3m3 0h1m2 0h1M1 25.5h1m1 0h3m1 0h1m2 0h3m1 0h1m1 0h2m2 0h7M1 26.5h1m1 0h3m1 0h1m2 0h3m4 0h1m2 0h2m4 0h3M1 27.5h1m1 0h3m1 0h1m2 0h1m3 0h1m4 0h1m1 0h8M1 28.5h1m5 0h1m3 0h1m1 0h4m2 0h1m2 0h1m3 0h2m1 0h1M1 29.5h7m1 0h1m2 0h1m1 0h1m4 0h2m4 0h1m1 0h1"},"healing":{"n":31,"d":"M1 1.5h7m3 0h1m4 0h3m1 0h2m1 0h7M1 2.5h1m5 0h1m4 0h1m6 0h1m1 0h1m1 0h1m5 0h1M1 3.5h1m1 0h3m1 0h1m1 0h3m3 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h3m1 0h1M1 4.5h1m1 0h3m1 0h1m1 0h3m5 0h2m4 0h1m1 0h3m1 0h1M1 5.5h1m1 0h3m1 0h1m1 0h2m3 0h3m3 0h2m1 0h1m1 0h3m1 0h1M1 6.5h1m5 0h1m1 0h2m1 0h6m1 0h1m3 0h1m5 0h1M1 7.5h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7M9 8.5h2m2 0h2m1 0h1m2 0h3M1 9.5h1m1 0h5m2 0h1m1 0h1m2 0h2m1 0h1m1 0h1m2 0h5M2 10.5h3m1 0h1m2 0h2m1 0h2m2 0h5m1 0h4m3 0h1M5 11.5h1m1 0h1m1 0h2m2 0h1m4 0h1m3 0h2m1 0h1M5 12.5h2m1 0h1m1 0h2m1 0h1m1 0h1m1 0h1m6 0h1m1 0h1m1 0h1M1 13.5h1m1 0h3m1 0h1m2 0h1m1 0h2m3 0h3m1 0h1m4 0h2M2 14.5h5m1 0h1m1 0h1m1 0h1m1 0h3m1 0h8m3 0h1M3 15.5h3m1 0h3m2 0h7m2 0h1m1 0h5M4 16.5h2m2 0h2m4 0h1m1 0h1m2 0h1m1 0h3m1 0h1m2 0h1M3 17.5h1m2 0h3m1 0h1m4 0h2m1 0h1m1 0h1m5 0h2M1 18.5h6m1 0h2m1 0h3m2 0h2m1 0h7m1 0h1m1 0h1M1 19.5h1m2 0h2m1 0h1m1 0h1m2 0h1m6 0h1m1 0h1m2 0h2m1 0h1M1 20.5h1m1 0h1m1 0h2m2 0h1m2 0h2m1 0h1m1 0h1m5 0h3m2 0h1M1 21.5h1m3 0h3m3 0h3m3 0h2m2 0h5m1 0h3M9 22.5h1m3 0h4m4 0h1m3 0h5M1 23.5h7m2 0h2m2 0h4m1 0h3m1 0h1m1 0h3M1 24.5h1m5 0h1m1 0h2m1 0h3m1 0h1m2 0h3m3 0h1M1 25.5h1m1 0h3m1 0h1m1 0h1m1 0h2m2 0h2m1 0h1m2 0h5m1 0h1m1 0h1M1 26.5h1m1 0h3m1 0h1m1 0h1m2 0h3m1 0h2m2 0h3m3 0h2M1 27.5h1m1 0h3m1 0h1m1 0h4m1 0h1m4 0h1m2 0h7M1 28.5h1m5 0h1m2 0h1m1 0h1m1 0h2m1 0h1m1 0h1m1 0h1m1 0h1m1 0h2m1 0h1M1 29.5h7m1 0h1m1 0h1m3 0h1m3 0h2m6 0h1"}};
 const stack=["Expo","React Native","TypeScript","three.js","Supabase","앱인토스","PWA"];
 const $=id=>document.getElementById(id);
 const reduce=matchMedia("(prefers-reduced-motion:reduce)").matches;
@@ -338,18 +325,20 @@ function matches(w){
   const tg=tag==="전체"||(tag==="앱"&&w.k==="app")||(tag==="게임"&&w.k==="game")||w.g.includes(tag);
   return hit&&tg;
 }
+/* 게임은 QR 코드로만 열립니다 (링크 없음). QR은 각 게임 주소를 미리 만들어 둔 것입니다. */
+const qrSVG=id=>{const q=QR[id];return q?`<svg role="img" aria-label="QR 코드" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${q.n} ${q.n}" shape-rendering="crispEdges"><path fill="#fff" d="M0 0h${q.n}v${q.n}H0z"/><path stroke="#000" d="${q.d}"/></svg>`:""};
 const cardHTML=w=>`<button class="card" type="button" data-id="${w.id}" aria-haspopup="dialog">
   ${w.i?`<img class="ico" src="${w.i}" alt="${w.t} 로고">`:`<div class="ico">${w.t[0]}</div>`}
-  <span class="go">↗</span><h3>${w.t}</h3><p>${w.d}</p>
-  <div class="tags">${w.g.map(x=>`<span>${x}</span>`).join("")}</div></button>`;
+  ${w.k==="app"?`<span class="go">↗</span>`:""}<h3>${w.t}</h3><p>${w.d}</p>
+  <div class="tags">${w.g.map(x=>`<span>${x}</span>`).join("")}</div>
+  ${w.k==="game"?`<div class="gqr">${qrSVG(w.id)}</div><div class="scan">📱 카메라로 스캔</div>`:""}</button>`;
 function render(first){
   const list=items.filter(matches);
-  const apps=list.filter(w=>w.k==="app"),games=list.filter(w=>w.k==="game"&&!w.feat);
+  const apps=list.filter(w=>w.k==="app"),games=list.filter(w=>w.k==="game");
   const fill=(el,arr)=>{el.innerHTML=arr.map((w,n)=>`<div class="cw ${first?"rv":"pop"}" style="--d:${n*.06}s">${cardHTML(w)}</div>`).join("")};
   fill($("appGrid"),apps);fill($("gameGrid"),games);
   $("appEmpty").style.display=apps.length?"none":"block";
-  $("gameEmpty").style.display=(games.length||list.some(w=>w.feat))?"none":"block";
-  $("feature").style.display=list.some(w=>w.feat)?"":"none";
+  $("gameEmpty").style.display=games.length?"none":"block";
   $("apps").style.display=(!apps.length&&tag==="게임")?"none":"";
   $("fchips").innerHTML=tagsList.map(t=>`<button type="button" class="${t===tag?"on":""}" data-tag="${t}">${t}</button>`).join("");
   if(first)reveal();
@@ -392,7 +381,8 @@ async function openSheet(id){
   $("sheetBody").innerHTML=`${w.i?`<img class="big" src="${w.i}" alt="${w.t} 로고">`:`<div class="big">${w.t[0]}</div>`}
     <h3>${w.t}</h3><div class="kind">${w.k==="app"?"앱":"게임"}</div><p class="desc">${w.d}</p>
     <div class="tags">${w.g.map(x=>`<span>${x}</span>`).join("")}</div>
-    <div class="sact"><a class="btn" href="${w.u}" target="_blank" rel="noopener">열어보기 ↗</a>
+    ${w.k==="game"?`<div class="sqr">${qrSVG(w.id)}</div><p class="shint">휴대폰 카메라로 QR 코드를 스캔하면 플레이할 수 있어요.</p>`:""}
+    <div class="sact">${w.k==="app"?`<a class="btn" href="${w.u}" target="_blank" rel="noopener">열어보기 ↗</a>`:""}
     <button class="like" id="likeBtn" type="button" aria-label="좋아요">♡ <span id="likeN">·</span></button></div>`;
   const lb=$("likeBtn");let liked=store.get("liked:"+id)==="1";
   const paint=n=>{lb.classList.toggle("on",liked);lb.firstChild.textContent=liked?"♥ ":"♡ ";$("likeN").textContent=n==null?"":n};
